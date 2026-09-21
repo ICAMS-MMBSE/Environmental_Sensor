@@ -1,0 +1,13 @@
+/*
+  Seeed XIAO nRF52840
+  D4 = SDA (P0.04)
+  D5 = SCL (P0.05)
+*/
+
+&i2c1 {
+	scd40: scd40@62 {
+		compatible = "sensirion,scd40";
+		status = "okay";
+		reg = <0x62>;
+	};
+};
