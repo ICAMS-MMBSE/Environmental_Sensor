@@ -6,7 +6,7 @@ A Bluetooth Mesh sensor network that monitors air quality, noise, and climate on
 
 Each node is built on a Seeed Studio XIAO nRF52840, chosen for its small size, low cost, and simple integration.
 
-## Sensors
+### Sensors
 
 - DFRobot Gravity Sound Level Meter V2.0: analog sound level (dBA)
 - Adafruit SCD-40 breakout (Sensirion SCD40): CO2, temperature, humidity
@@ -14,4 +14,31 @@ Each node is built on a Seeed Studio XIAO nRF52840, chosen for its small size, l
 
 ### Architecture
 
-Each node will have three sensors. The shop floor will have six nodes communicating with each other over [Bluetooth SIG Mesh](https://www.bluetooth.com/learn-about-bluetooth/feature-enhancements/mesh/). A gateway node bridges the mesh to a RAK7391 WisGate Connect, where a Python script in a Docker container collects the readings and publishes them to the Mosquitto MQTT broker.
+Each node will have three sensors. The shop floor will have six nodes communicating with each other over [Bluetooth SIG Mesh](https://www.bluetooth.com/learn-about-bluetooth/feature-enhancements/mesh/). The gateway node will run on the RAK7391 WisGate Connect.
+
+## Software
+
+### Firmware
+
+The node firmware is a Zephyr application built with the nRF Connect SDK (NCS v3.4.1, Zephyr 4.4.2). There is one image for the six nodes, and the gateway will be the AX210N on the Wisgate.
+
+The three sensors are read through Zephyr's sensor subsystem:
+
+- SCD40 uses the in-tree `sensirion,scd4x` driver over I2C.
+- SEN55 has no in-tree driver, so an out-of-tree driver lives in `firmware/drivers/sensor/sen5x/` with its devicetree binding in `firmware/dts/bindings/`.
+- The sound level meter is analog and is read through the ADC in `src/sensors/sound_level.c`.
+
+### Structure
+```
+Environmental_Sensor/
+├── README.md
+├── firmware/                  # one firmware image for sensor-node
+│   ├── CMakeLists.txt / Kconfig / prj.conf
+│   ├── boards/  (xiao_ble + nrf5340dk overlays)
+│   ├── src/  main.c, sensors/, mesh/
+│   ├── drivers/sensor/sen5x/
+│   └── dts/bindings/sensor/sensirion,sen5x.yaml
+└── gateway/                 
+```
+
+### Gateway software
