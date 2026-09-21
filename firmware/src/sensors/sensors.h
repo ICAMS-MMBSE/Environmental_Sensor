@@ -9,7 +9,7 @@ struct env_reading {
     struct sensor_value humidity;
 };
 
-int scd40_init(void)
+int scd40_init(void);
 int scd40_read(struct env_reading *r);
 
 #endif
