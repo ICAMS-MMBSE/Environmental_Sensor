@@ -5,6 +5,8 @@ project(Environmental_Sensor)
 
 target_sources(app PRIVATE
     src/main.c
-    src/sensors/scd40.c    
+    src/sensors/scd40.c
+    src/mesh/mesh.c
+    src/mesh/model_handler.c
 )
 target_include_directories(app PRIVATE src)

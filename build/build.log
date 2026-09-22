@@ -1,0 +1,1 @@
+2026-09-22T18:05:06.867Z west build --build-dir /home/andrew/work/Environmental_Sensor/build /home/andrew/work/Environmental_Sensor --pristine --board nrf5340dk/nrf5340/cpuapp -- -DDEBUG_THREAD_INFO=Off

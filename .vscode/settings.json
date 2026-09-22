@@ -1,6 +1,6 @@
 {
     "nrf-connect.applications": [
-        "${workspaceFolder}"
+        "${workspaceFolder}/firmware"
     ],
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
