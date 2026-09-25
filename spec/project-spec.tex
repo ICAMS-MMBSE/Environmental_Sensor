@@ -1,0 +1,186 @@
+% =====================================================================
+%  ICAMS project spec  |  reusable template
+%  Compile with: pdflatex icams-project-spec.tex  (run twice)
+%  Edit the FIELDS block below, then the body. Target length: 2-4 pages.
+% =====================================================================
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{charter}                       % body serif
+\usepackage[scaled=0.92]{helvet}           % headings sans
+\usepackage{microtype}
+\usepackage[margin=1in,top=0.9in,bottom=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{graphicx}                      % for the optional figure block
+\usepackage[hidelinks]{hyperref}
+
+% ---------------------------------------------------------------------
+%  FIELDS  (edit these)
+% ---------------------------------------------------------------------
+\newcommand{\orgName}{Interdisciplinary Center for Advanced Manufacturing Systems}
+\newcommand{\orgShort}{ICAMS}
+\newcommand{\orgSub}{Industrial IoT Research Lab \textbullet\ Auburn University}
+\newcommand{\docTitle}{Environmental Sensor BLE Mesh}
+\newcommand{\docSubtitle}{8-node BT SIG Mesh across ICAMS shop floor capturing temp, humidity, sound levels and feeding into grafana}
+\newcommand{\reqName}{Andrew Suggs}
+
+\newcommand{\reqDate}{\today}
+\newcommand{\reqRole}{Project lead}
+\newcommand{\reqProgram}{MMBSE}
+\newcommand{\docRev}{Rev A}
+\newcommand{\docStatus}{Draft}
+
+% ---------------------------------------------------------------------
+%  STYLE  (leave alone unless the lab restyles)
+% ---------------------------------------------------------------------
+\definecolor{rule}{gray}{0.35}
+\definecolor{soft}{gray}{0.45}
+
+\titleformat{\section}{\normalfont\sffamily\bfseries\large}{}{0pt}{}
+\titlespacing*{\section}{0pt}{14pt}{5pt}
+\titleformat{\subsection}{\normalfont\sffamily\bfseries\normalsize}{}{0pt}{}
+\titlespacing*{\subsection}{0pt}{10pt}{3pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyfoot[L]{\footnotesize\sffamily\color{soft}\orgShort\ \textbullet\ \docTitle\ \textbullet\ \docRev}
+\fancyfoot[R]{\footnotesize\sffamily\color{soft}Page \thepage}
+
+\setlist[itemize]{leftmargin=1.2em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.15}
+
+% two-column key/value strip used in the header block
+\newcommand{\metaline}[2]{\textsf{\footnotesize\color{soft}#1}\quad #2}
+
+\begin{document}
+	
+	% ---------------------------------------------------------------------
+	%  LETTERHEAD
+	% ---------------------------------------------------------------------
+	{\sffamily\bfseries\large\orgName}\\[1pt]
+	{\sffamily\footnotesize\color{soft}\orgSub}
+	
+	\vspace{4pt}
+	{\color{rule}\hrule height 1pt}
+	\vspace{10pt}
+	
+	{\sffamily\bfseries\LARGE\docTitle}\\[3pt]
+	{\sffamily\normalsize\color{soft}\docSubtitle}
+	
+	\vspace{10pt}
+	
+	\begin{tabularx}{\textwidth}{@{}XX@{}}
+		\metaline{Author}{\reqName} & \metaline{Role}{\reqRole} \\
+		\metaline{Date}{\reqDate} & \metaline{Program}{\reqProgram} \\
+		\metaline{Revision}{\docRev} & \metaline{Status}{\docStatus} \\
+	\end{tabularx}
+	
+	\vspace{6pt}
+	{\color{rule}\hrule height 0.4pt}
+	
+	% ---------------------------------------------------------------------
+	%  BODY
+	% ---------------------------------------------------------------------
+	\section{Summary}
+	
+	% One paragraph: what is being built and why.
+	A Bluetooth Low Energy Mesh (SIG) is being built to monitor environmental data across the ICAMS shop floor. The data that will be collected includes temperature, humidity, CO2, sound level, O2, particulate matter, and volatile organic compounds. The sensors used are the SCD40, DFRobot Sound Level Meter V1.0 and 2.0, SEN54, and DFRobot Oxygen Sensor.
+	
+	The environmental sensors will be used to monitor working conditions and display on Grafana. Eventually, they will be connected to a ML algorithm to set thresholds that will trigger the smart switch system to power on and off dehumidifiers.
+	
+	\section{Background}
+	
+	% Current state and the problem this project addresses.
+	This project will replace the previous system that was used to collect environmental sensor data through Bluetooth using the Arduino MKR Wifi 1010. This board was poorly suited for this task since Arduino does not have built-in support for BT SIG Mesh. Connections were limited to fewer than six nodes because of this, and data collection was spotty. Additionally, a new collector is being put in place and will run the script in a Docker container using Python, where all data will be pushed via MQTT through the broker Mosquitto.
+	\section{Scope}
+	
+	\subsection{In scope}
+	\begin{itemize}
+		\item Provide data in a portable format
+		\item Collect data
+		\item Redundant nodes to ensure system always online
+		\item Ensure ideal working conditions and monitoring
+	\end{itemize}
+	
+	\subsection{Out of scope}
+	\begin{itemize}
+		\item ML Algorithm
+		\item Control humidifiers
+		\item Grafana display
+	\end{itemize}
+	
+	\section{Requirements}
+	
+	\begin{tabularx}{\textwidth}{@{}l X l@{}}
+		\toprule
+		\textsf{\small ID} & \textsf{\small Requirement} & \textsf{\small Priority} \\
+		\midrule
+		R1 &  & - \\
+		R2 & - & - \\
+		\bottomrule
+	\end{tabularx}
+	
+	\section{System design}
+	
+	% Architecture, interfaces, and major components.
+	
+	% --- optional component table ----------------------------------------
+	% \begin{tabularx}{\textwidth}{@{}l l X@{}}
+		% \toprule
+		% \textsf{\small Component} & \textsf{\small Part} & \textsf{\small Function} \\
+		% \midrule
+		% -   & -   & - \\
+		% \bottomrule
+		% \end{tabularx}
+	
+	% --- optional figure -------------------------------------------------
+	% \begin{figure}[h]
+		%   \centering
+		%   \includegraphics[width=0.8\textwidth]{diagram.png}
+		%   \caption{\small Caption here}
+		% \end{figure}
+	
+	\section{Milestones}
+	
+	\begin{tabularx}{\textwidth}{@{}l X r@{}}
+		\toprule
+		\textsf{\small Phase} & \textsf{\small Deliverable} & \textsf{\small Target} \\
+		\midrule
+		1 & - & - \\
+		2 & - & - \\
+		\bottomrule
+	\end{tabularx}
+	
+	\section{Verification}
+	
+	% How each requirement will be tested or demonstrated.
+	
+	\section{Risks and open items}
+	
+	\begin{itemize}
+		\item \textbf{Item 1} needs resolution/decision
+		\item \textbf{Item 2} needs resolution/decision
+	\end{itemize}
+	
+	\section{Approval}
+	
+	\vspace{22pt}
+	\begin{tabularx}{\textwidth}{@{}X c X@{}}
+		\rule{\linewidth}{0.4pt} & \hspace{6pt} & \rule{\linewidth}{0.4pt} \\
+		\textsf{\footnotesize\color{soft}Author \textbullet\ \reqName} & &
+		\textsf{\footnotesize\color{soft}Approver \textbullet\ Date} \\
+	\end{tabularx}
+	
+\end{document}
